@@ -5,6 +5,7 @@ const path = require("node:path");
 const { Client, Events, Collection, GatewayIntentBits } = require("discord.js");
 const token = process.env.DISCORD_TOKEN;
 const { connectToDB } = require("./db/db.js");
+const { startReminderWorker } = require("./reminderWorker");
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -13,6 +14,12 @@ client.once(Events.ClientReady, async (readyClient) => {
     await connectToDB();
 
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+    // start background reminder worker which will check due reminders and post to configured channel
+    // Optional environment variable REMINDER_POLL_INTERVAL_MS can be used to shorten the interval for testing (milliseconds)
+    const pollMs = process.env.REMINDER_POLL_INTERVAL_MS
+      ? parseInt(process.env.REMINDER_POLL_INTERVAL_MS, 10)
+      : undefined;
+    startReminderWorker(readyClient, pollMs);
   } catch (err) {
     console.log("Unable to set up discord bot: ", err);
   }
@@ -33,8 +40,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
   } catch (error) {
     console.log(error);
   }
-
-  console.log(interaction);
 });
 
 client.commands = new Collection();
