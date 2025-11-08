@@ -21,7 +21,8 @@
   "homepage": "https://github.com/SpectreFury/leetcode-discord-bot#readme",
   "dependencies": {
     "discord.js": "^14.23.0",
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "mongoose": "^8.19.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

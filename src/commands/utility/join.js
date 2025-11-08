@@ -2,9 +2,9 @@ const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Replies with Pong!"),
+    .setName("join")
+    .setDescription("Start your leetcode tracking journey"),
   async execute(interaction) {
-    await interaction.reply("Ashhar is secretly gay");
+    await interaction.reply("Join command is working correctly");
   },
 };
